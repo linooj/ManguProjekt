@@ -16,7 +16,7 @@
 
 **LISAIDEED PRAKTIKUMIST**
 
-- Space bar asemel võib-olla teha üles-alla liikumine;
+- Space bar asemel võib-olla teha üles-alla ja edasi-tagasi liikumine;
 
 - Lisada power-up'id (mis nt viivad ettepoole)/shield'id vms;
 
