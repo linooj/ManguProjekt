@@ -14,6 +14,12 @@
 
 - mida rohkem punkte e saia tuvi sööb, seda paksemaks ta muutub ja kiiremini alla vajub
 
+**LISAIDEED PRAKTIKUMIST**
+
+- Space bar asemel võib-olla teha üles-alla liikumine;
+
+- Lisada power-up'id (mis nt viivad ettepoole)/shield'id vms;
+
 **PROJEKTIPLAAN**
 
 SPRINT 1 (nädal 2-4)
