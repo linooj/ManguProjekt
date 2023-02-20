@@ -10,6 +10,7 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
 import com.badlogic.gdx.physics.box2d.World;
+import objects.player.Player;
 
 import static helper.Constants.PPM;
 
@@ -20,10 +21,13 @@ public class GameScreen extends ScreenAdapter {
     private World world;
     private Box2DDebugRenderer box2DDebugRenderer;
 
+    //game objects
+    private Player player;
+
     public GameScreen(OrthographicCamera camera) {
         this.camera = camera;
         this.batch = new SpriteBatch();
-        this.world = new World(new Vector2(0,0), false); //gravity?
+        this.world = new World(new Vector2(0,-8.91f), false);
         this.box2DDebugRenderer = new Box2DDebugRenderer();
 
     }
@@ -39,7 +43,11 @@ public class GameScreen extends ScreenAdapter {
     }
 
     private void cameraUpdate() {
-        camera.position.set(new Vector3(0,0,0));
+        Vector3 position = camera.position;
+        //get player positions x and y value, bring it to real world position and round it for smoother camera movement
+        position.x= Math.round(player.getBody().getPosition().x*PPM*10)/10f;
+        position.x= Math.round(player.getBody().getPosition().y*PPM*10)/10f;
+        camera.position.set(position);
         camera.update();
     }
 
@@ -57,5 +65,11 @@ public class GameScreen extends ScreenAdapter {
         box2DDebugRenderer.render(world, camera.combined.scl(PPM));
     }
 
+    public World getWorld() {
+        return world;
+    }
 
+    public void setPlayer(Player player) {
+        this.player = player;
+    }
 }
