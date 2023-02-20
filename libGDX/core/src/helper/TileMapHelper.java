@@ -5,6 +5,7 @@ import com.badlogic.gdx.maps.MapObjects;
 import com.badlogic.gdx.maps.objects.PolygonMapObject;
 import com.badlogic.gdx.maps.objects.RectangleMapObject;
 import com.badlogic.gdx.maps.tiled.TiledMap;
+import com.badlogic.gdx.maps.tiled.TmxMapLoader;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.physics.box2d.Body;
@@ -24,6 +25,10 @@ public class TileMapHelper {
 
     //TODO setupMap function
 
+    public OrthogonalTiledMapRenderer setUpMap() {
+        tiledMap = new TmxMapLoader().load("maps/map0.tmx");
+        return new OrthogonalTiledMapRenderer(tiledMap);
+    }
 
     private void parseMapObjects(MapObjects mapObjects) {
         for(MapObject mapObject : mapObjects) {
