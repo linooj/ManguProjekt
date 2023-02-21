@@ -1,5 +1,7 @@
 package helper;
 
+import com.badlogic.gdx.maps.MapLayer;
+import com.badlogic.gdx.maps.MapLayers;
 import com.badlogic.gdx.maps.MapObject;
 import com.badlogic.gdx.maps.MapObjects;
 import com.badlogic.gdx.maps.objects.PolygonMapObject;
@@ -29,8 +31,10 @@ public class TileMapHelper {
     }
 
     public OrthogonalTiledMapRenderer setUpMap() {
-        tiledMap = new TmxMapLoader().load("../libGDX/assets/maps/maps0.tmx");
-        parseMapObjects(tiledMap.getLayers().get("objects").getObjects());
+        tiledMap = new TmxMapLoader().load("./assets/maps/map0.tmx");
+        MapLayers layers = tiledMap.getLayers();
+        MapLayer objects = layers.get("objects");
+        parseMapObjects(objects.getObjects());
         return new OrthogonalTiledMapRenderer(tiledMap);
 
     }
