@@ -40,19 +40,20 @@ public class TileMapHelper {
     }
 
     private void parseMapObjects(MapObjects mapObjects) {
-        for(MapObject mapObject : mapObjects) {
+        for (MapObject mapObject : mapObjects) {
 
             if (mapObject instanceof PolygonMapObject) {
-                createStaticBody((PolygonMapObject) mapObject) ;
+                createStaticBody((PolygonMapObject) mapObject);
             }
-            if(mapObject instanceof RectangleMapObject) {
+
+            if (mapObject instanceof RectangleMapObject) {
                 Rectangle rectangle = ((RectangleMapObject) mapObject).getRectangle();
                 String rectangleName = mapObject.getName();
 
-                if (rectangleName.equals("player")){
-                    Body body= BodyHelperService.createBody(
-                            rectangle.getX() + rectangle.getWidth()/2,
-                            rectangle.getY() + rectangle.getHeight()/2,
+                if (rectangleName.equals("player")) {
+                    Body body = BodyHelperService.createBody(
+                            rectangle.getX() + rectangle.getWidth() / 2,
+                            rectangle.getY() + rectangle.getHeight() / 2,
                             rectangle.getWidth(),
                             rectangle.getHeight(),
                             false,
@@ -77,8 +78,8 @@ public class TileMapHelper {
         float[] vertices = polygonMapObject.getPolygon().getTransformedVertices();
         Vector2[] worldVertices = new Vector2[vertices.length / 2];
 
-        for (int i=0; i< vertices.length/2; i++) {
-            Vector2 current = new Vector2(vertices[i*2]/PPM, vertices[i*2+1]/PPM);
+        for (int i = 0; i < vertices.length / 2; i++) {
+            Vector2 current = new Vector2(vertices[i * 2] / PPM, vertices[i * 2 + 1] / PPM);
             worldVertices[i] = current;
         }
         PolygonShape shape = new PolygonShape();

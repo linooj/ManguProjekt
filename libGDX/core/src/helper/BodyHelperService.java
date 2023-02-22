@@ -17,14 +17,14 @@ public class BodyHelperService {
         BodyDef bodyDef = new BodyDef();
         //if boolean isStatic is true -> creates static body, else ...
         bodyDef.type = isStatic ? BodyDef.BodyType.StaticBody : BodyDef.BodyType.DynamicBody;
-        bodyDef.position.set(x/PPM, y/PPM);
+        bodyDef.position.set(x / PPM, y / PPM);
         bodyDef.fixedRotation = true;
         Body body = world.createBody(bodyDef);
 
         //define shape
         //TODO change from square xd
         PolygonShape shape = new PolygonShape();
-        shape.setAsBox(width/2/PPM, height/2/PPM);
+        shape.setAsBox(width / 2 / PPM, height / 2 / PPM);
 
         FixtureDef fixtureDef = new FixtureDef();
         fixtureDef.shape = shape;

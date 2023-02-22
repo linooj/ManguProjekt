@@ -31,7 +31,7 @@ public class GameScreen extends ScreenAdapter {
     public GameScreen(OrthographicCamera camera) {
         this.camera = camera;
         this.batch = new SpriteBatch();
-        this.world = new World(new Vector2(0,-8.91f), false);
+        this.world = new World(new Vector2(0, -9.81f), false);
         this.box2DDebugRenderer = new Box2DDebugRenderer();
 
         this.tileMapHelper = new TileMapHelper(this);
@@ -40,7 +40,7 @@ public class GameScreen extends ScreenAdapter {
 
     private void update() {
 
-        world.step(1/60f,6,2);
+        world.step(1 / 60f, 6, 2);
         cameraUpdate();
         batch.setProjectionMatrix(camera.combined);
         orthogonalTiledMapRenderer.setView(camera);
@@ -51,8 +51,8 @@ public class GameScreen extends ScreenAdapter {
     private void cameraUpdate() {
         Vector3 position = camera.position;
         //get player positions x and y value, bring it to real world position and round it for smoother camera movement
-        position.x= Math.round(player.getBody().getPosition().x*PPM*10)/10f;
-        position.x= Math.round(player.getBody().getPosition().y*PPM*10)/10f;
+        position.x = Math.round(player.getBody().getPosition().x * PPM * 10) / 10f;
+        position.x = Math.round(player.getBody().getPosition().y * PPM * 10) / 10f;
         camera.position.set(position);
         camera.update();
     }
@@ -61,7 +61,7 @@ public class GameScreen extends ScreenAdapter {
     public void render(float delta) {
         this.update();
 
-        Gdx.gl.glClearColor(0,0,0,1); //black
+        Gdx.gl.glClearColor(0, 0, 0, 1); //black
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
         orthogonalTiledMapRenderer.render();

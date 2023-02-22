@@ -14,9 +14,9 @@ public abstract class GameEntity {
         this.y = body.getPosition().y;
         this.width = width;
         this.height = height;
+        this.body = body;
         this.velX = 0;
         this.velY = 0;
-        this.body = body;
         this.speed = 0;
     }
 
@@ -24,7 +24,7 @@ public abstract class GameEntity {
 
     public abstract void render(SpriteBatch batch);
 
-    public  Body getBody() {
+    public Body getBody() {
         return body;
     }
 }
