@@ -19,7 +19,9 @@ import static helper.Constants.PPM;
 public class GameScreen extends ScreenAdapter {
 
     private OrthographicCamera camera;
+    //
     private SpriteBatch batch;
+    // world's class stores box2D bodies
     private World world;
     private Box2DDebugRenderer box2DDebugRenderer;
 
@@ -28,6 +30,9 @@ public class GameScreen extends ScreenAdapter {
     //game objects
     private Player player;
 
+    /**
+     * GameScreen constructor.
+     * */
     public GameScreen(OrthographicCamera camera) {
         this.camera = camera;
         this.batch = new SpriteBatch();
