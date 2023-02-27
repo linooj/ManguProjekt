@@ -31,7 +31,7 @@ public class GameScreen extends ScreenAdapter {
     public GameScreen(OrthographicCamera camera) {
         this.camera = camera;
         this.batch = new SpriteBatch();
-        this.world = new World(new Vector2(0, -9.81f), false);
+        this.world = new World(new Vector2(0, -25f), false);
         this.box2DDebugRenderer = new Box2DDebugRenderer();
 
         this.tileMapHelper = new TileMapHelper(this);
@@ -44,6 +44,8 @@ public class GameScreen extends ScreenAdapter {
         cameraUpdate();
         batch.setProjectionMatrix(camera.combined);
         orthogonalTiledMapRenderer.setView(camera);
+        player.update();
+
         if (Gdx.input.isKeyPressed(Input.Keys.ESCAPE)) Gdx.app.exit();
 
     }
@@ -52,7 +54,7 @@ public class GameScreen extends ScreenAdapter {
         Vector3 position = camera.position;
         //get player positions x and y value, bring it to real world position and round it for smoother camera movement
         position.x = Math.round(player.getBody().getPosition().x * PPM * 10) / 10f;
-        position.x = Math.round(player.getBody().getPosition().y * PPM * 10) / 10f;
+        position.y = Math.round(player.getBody().getPosition().y * PPM * 10) / 10f;
         camera.position.set(position);
         camera.update();
     }
