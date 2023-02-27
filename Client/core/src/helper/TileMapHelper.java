@@ -31,7 +31,9 @@ public class TileMapHelper {
     }
 
     public OrthogonalTiledMapRenderer setUpMap() {
+//        Natuke halb lugu, et Anderol ei leia kaarti ulesse.
         tiledMap = new TmxMapLoader().load("./assets/maps/map0.tmx");
+//        tiledMap = new TmxMapLoader().load("C:\\Users\\ander\\IdeaProjects\\piGeon\\Client\\assets\\maps\\map0.tmx");
         MapLayers layers = tiledMap.getLayers();
         MapLayer objects = layers.get("objects");
         parseMapObjects(objects.getObjects());
