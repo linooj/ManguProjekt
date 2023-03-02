@@ -22,7 +22,6 @@ public class BodyHelperService {
         Body body = world.createBody(bodyDef);
 
         //define shape
-        //TODO change from square xd
         PolygonShape shape = new PolygonShape();
         shape.setAsBox(width / 2 / PPM, height / 2 / PPM);
 
