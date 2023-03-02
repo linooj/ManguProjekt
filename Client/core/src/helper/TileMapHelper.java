@@ -1,5 +1,6 @@
 package helper;
 
+import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.maps.MapLayer;
 import com.badlogic.gdx.maps.MapLayers;
 import com.badlogic.gdx.maps.MapObject;
@@ -7,7 +8,9 @@ import com.badlogic.gdx.maps.MapObjects;
 import com.badlogic.gdx.maps.objects.PolygonMapObject;
 import com.badlogic.gdx.maps.objects.RectangleMapObject;
 import com.badlogic.gdx.maps.tiled.TiledMap;
+import com.badlogic.gdx.maps.tiled.TiledMapTile;
 import com.badlogic.gdx.maps.tiled.TmxMapLoader;
+import com.badlogic.gdx.maps.tiled.objects.TiledMapTileMapObject;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
@@ -17,6 +20,7 @@ import com.badlogic.gdx.physics.box2d.PolygonShape;
 import com.badlogic.gdx.physics.box2d.Shape;
 import com.pigeon.game.GameScreen;
 import objects.player.Player;
+import objects.player.PlayerAnimation;
 
 
 import static helper.Constants.PPM;
@@ -31,9 +35,7 @@ public class TileMapHelper {
     }
 
     public OrthogonalTiledMapRenderer setUpMap() {
-//        Natuke halb lugu, et Anderol ei leia kaarti ulesse.
         tiledMap = new TmxMapLoader().load("./Client/assets/maps/map1.tmx");
-//        tiledMap = new TmxMapLoader().load("C:\\Users\\ander\\IdeaProjects\\piGeon\\Client\\assets\\maps\\map0.tmx");
         MapLayers layers = tiledMap.getLayers();
         MapLayer objects = layers.get("objects");
         parseMapObjects(objects.getObjects());
@@ -41,29 +43,34 @@ public class TileMapHelper {
 
     }
 
+    //parse "objects" from map. if object name is "player"- create a rectangle player object
     private void parseMapObjects(MapObjects mapObjects) {
         for (MapObject mapObject : mapObjects) {
 
             if (mapObject instanceof PolygonMapObject) {
                 createStaticBody((PolygonMapObject) mapObject);
             }
+            //change to tiledmaptiledmapobject
 
-            if (mapObject instanceof RectangleMapObject) {
-                Rectangle rectangle = ((RectangleMapObject) mapObject).getRectangle();
-                String rectangleName = mapObject.getName();
+            if (mapObject instanceof TiledMapTileMapObject) {
+                TiledMapTile player = ((TiledMapTileMapObject) mapObject).getTile();
+                System.out.println(player.getObjects().getCount());
+                Body body = BodyHelperService.createBody(
+                        20 + 16 / 2,
+                        20 + 16 / 2,
+                        16,
+                        16,
+                        false,
+                        gameScreen.getWorld()
+                );
+                PlayerAnimation pigeon = new PlayerAnimation();
+                pigeon.create();
+                pigeon.render();
+                pigeon.dispose();
+                gameScreen.setPlayer(new Player(16, 16, body));
 
-                if (rectangleName.equals("player")) {
-                    Body body = BodyHelperService.createBody(
-                            rectangle.getX() + rectangle.getWidth() / 2,
-                            rectangle.getY() + rectangle.getHeight() / 2,
-                            rectangle.getWidth(),
-                            rectangle.getHeight(),
-                            false,
-                            gameScreen.getWorld()
-                    );
-                    gameScreen.setPlayer(new Player(rectangle.getWidth(), rectangle.getHeight(), body));
-                }
             }
+
         }
     }
 
