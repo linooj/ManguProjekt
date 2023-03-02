@@ -42,7 +42,7 @@ public class PlayerAnimation implements ApplicationListener {
         for (int i = 0; i <= PIGEON_ROW_END; i++) {
             for (int j = 0; j <= PIGEON_COLS_END; j++) {
                 flapFrames[index++] = tmp[i][j];
-                System.out.println(flapFrames);
+                System.out.println(tmp[i][j].getRegionX() + i);
             }
         }
 
