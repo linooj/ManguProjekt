@@ -12,7 +12,11 @@ import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
 import com.badlogic.gdx.physics.box2d.World;
 import helper.TileMapHelper;
+import network.ClientConnection;
+import network.Location;
 import objects.player.Player;
+
+import java.io.IOException;
 
 import static helper.Constants.PPM;
 
@@ -29,11 +33,12 @@ public class GameScreen extends ScreenAdapter {
     private TileMapHelper tileMapHelper;
     //game objects
     private Player player;
+    private ClientConnection clientConnection;
 
     /**
      * GameScreen constructor.
      * */
-    public GameScreen(OrthographicCamera camera) {
+    public GameScreen(OrthographicCamera camera) throws IOException {
         this.camera = camera;
         this.batch = new SpriteBatch();
         this.world = new World(new Vector2(0, -25f), false);
@@ -41,17 +46,25 @@ public class GameScreen extends ScreenAdapter {
 
         this.tileMapHelper = new TileMapHelper(this);
         this.orthogonalTiledMapRenderer = tileMapHelper.setUpMap();
+        this.clientConnection = new ClientConnection();
     }
 
     private void update() {
-
         world.step(1 / 60f, 6, 2);
         cameraUpdate();
         batch.setProjectionMatrix(camera.combined);
         orthogonalTiledMapRenderer.setView(camera);
         player.update();
-
         if (Gdx.input.isKeyPressed(Input.Keys.ESCAPE)) Gdx.app.exit();
+
+//      For testing purposes
+//        if (!Gdx.input.isKeyPressed(Input.Keys.ANY_KEY)) clientConnection.client.sendUDP("not pressed");
+//        if (Gdx.input.isKeyPressed(Input.Keys.RIGHT)) clientConnection.client.sendUDP("right");
+//        if (Gdx.input.isKeyPressed(Input.Keys.LEFT)) clientConnection.client.sendUDP("left");
+//        if (Gdx.input.isKeyJustPressed(Input.Keys.UP)) clientConnection.client.sendUDP("up");
+//        if (Gdx.input.isKeyPressed(Input.Keys.DOWN)) clientConnection.client.sendUDP("down");
+
+        clientConnection.client.sendUDP(player.getLocation());
 
     }
 
@@ -63,6 +76,7 @@ public class GameScreen extends ScreenAdapter {
         camera.position.set(position);
         camera.update();
     }
+
 
     @Override
     public void render(float delta) {

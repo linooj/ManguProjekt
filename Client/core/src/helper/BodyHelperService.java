@@ -1,6 +1,7 @@
 package helper;
 
 import com.badlogic.gdx.physics.box2d.*;
+import org.graalvm.compiler.serviceprovider.IsolateUtil;
 
 import static helper.Constants.PPM;
 
@@ -29,6 +30,7 @@ public class BodyHelperService {
         fixtureDef.shape = shape;
         body.createFixture(fixtureDef);
         shape.dispose();
+        System.out.println("BodyHelperService createBody()");
         return body;
     }
 }

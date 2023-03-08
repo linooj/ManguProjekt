@@ -35,7 +35,8 @@ public class TileMapHelper {
     }
 
     public OrthogonalTiledMapRenderer setUpMap() {
-        tiledMap = new TmxMapLoader().load("./Client/assets/maps/map1.tmx");
+//        tiledMap = new TmxMapLoader().load("./Client/assets/maps/map1.tmx");
+        tiledMap = new TmxMapLoader().load("C:\\Users\\ander\\IdeaProjects\\piGeon\\Client\\assets\\maps\\map1.tmx");
         MapLayers layers = tiledMap.getLayers();
         MapLayer objects = layers.get("objects");
         parseMapObjects(objects.getObjects());
@@ -45,6 +46,7 @@ public class TileMapHelper {
 
     //parse "objects" from map. if object name is "player"- create a rectangle player object
     private void parseMapObjects(MapObjects mapObjects) {
+        System.out.println("TileMapHelper parseMapObjects()");
         for (MapObject mapObject : mapObjects) {
 
             if (mapObject instanceof PolygonMapObject) {
@@ -75,6 +77,7 @@ public class TileMapHelper {
     }
 
     private void createStaticBody(PolygonMapObject polygonMapObject) {
+        System.out.println("TileMapHelper createStaticBody()");
         BodyDef bodyDef = new BodyDef();
         bodyDef.type = BodyDef.BodyType.StaticBody;
         Body body = gameScreen.getWorld().createBody(bodyDef);
@@ -84,6 +87,7 @@ public class TileMapHelper {
     }
 
     private Shape createPolygonShape(PolygonMapObject polygonMapObject) {
+        System.out.println("TileMapHelper createPolygonShape()");
         float[] vertices = polygonMapObject.getPolygon().getTransformedVertices();
         Vector2[] worldVertices = new Vector2[vertices.length / 2];
 

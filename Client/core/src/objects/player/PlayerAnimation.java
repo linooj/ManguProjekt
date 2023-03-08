@@ -24,7 +24,8 @@ public class PlayerAnimation implements ApplicationListener {
     public void create() {
 
         // Load the sprite sheet as a Texture
-        flapSheet = new Texture(Gdx.files.internal("C:\\Users\\lnooj\\IdeaProjects\\piGeon\\Client\\assets\\maps\\pigeonsTiles.png"));
+//        flapSheet = new Texture(Gdx.files.internal("C:\\Users\\lnooj\\IdeaProjects\\piGeon\\Client\\assets\\maps\\pigeonsTiles.png"));
+        flapSheet = new Texture(Gdx.files.internal("C:\\Users\\ander\\IdeaProjects\\piGeon\\Client\\assets\\maps\\pigeonsTiles.png"));
 
         // Use the split utility method to create a 2D array of TextureRegions. This is
         // possible because this sprite sheet contains frames of equal size and they are
@@ -69,7 +70,8 @@ public class PlayerAnimation implements ApplicationListener {
         // Get current frame of animation for the current stateTime
         TextureRegion currentFrame = flap.getKeyFrame(stateTime, true);
         spriteBatch.begin();
-        spriteBatch.draw(currentFrame, 50, 50); // Draw current frame at (50, 50)
+//      See tegelt vajalik
+//        spriteBatch.draw(currentFrame, 50, 50); // Draw current frame at (50, 50)
         spriteBatch.end();
     }
 

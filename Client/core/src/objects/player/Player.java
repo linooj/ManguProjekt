@@ -1,11 +1,12 @@
 package objects.player;
 
-import com.badlogic.gdx.ApplicationListener;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
+import network.Location;
+
 
 import static helper.Constants.PPM;
 
@@ -29,6 +30,7 @@ public class Player extends GameEntity {
 
     }
 
+//    Seda ei ole serverisse vaja
     private void checkUserInput() {
         velX = 0;
         if (Gdx.input.isKeyPressed(Input.Keys.RIGHT)) velX=1;
@@ -48,5 +50,9 @@ public class Player extends GameEntity {
 
         body.setLinearVelocity(velX*speed, body.getLinearVelocity().y);
 
+    }
+
+    public Location getLocation() {
+        return new Location(this.getBody().getPosition().x, this.getBody().getPosition().y);
     }
 }
