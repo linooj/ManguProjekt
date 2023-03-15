@@ -26,7 +26,7 @@ public class PigeonGame extends Game {
         this.heightScreen = Gdx.graphics.getHeight();
         this.orthographicCamera = new OrthographicCamera();
         this.orthographicCamera.setToOrtho(false, widthScreen, heightScreen);
-        setScreen(new GameScreen(orthographicCamera));
+        setScreen(new GameScreen(orthographicCamera, this));
     }
 
     public void render() {

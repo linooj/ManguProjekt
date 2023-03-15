@@ -13,6 +13,7 @@ import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
 import com.badlogic.gdx.physics.box2d.World;
 import helper.TileMapHelper;
 import objects.player.Player;
+import objects.player.PlayerAnimation;
 
 import static helper.Constants.PPM;
 
@@ -28,6 +29,8 @@ public class GameScreen extends ScreenAdapter {
     private TileMapHelper tileMapHelper;
     //game objects
     private Player player;
+
+    PlayerAnimation pigeon = new PlayerAnimation();
 
     /**
      * GameScreen constructor.
@@ -71,12 +74,14 @@ public class GameScreen extends ScreenAdapter {
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
         orthogonalTiledMapRenderer.render();
+        game.batch.setProjectionMatrix(camera.combined);
 
         batch.begin();
         //render objects
-
+        pigeon.create();
+        pigeon.render();
+        pigeon.dispose();
         batch.end();
-        box2DDebugRenderer.render(world, camera.combined.scl(PPM));
     }
 
     public World getWorld() {
