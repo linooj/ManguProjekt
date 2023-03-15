@@ -17,13 +17,12 @@ import objects.player.Player;
 import static helper.Constants.PPM;
 
 public class GameScreen extends ScreenAdapter {
-
+    final PigeonGame game;
     private OrthographicCamera camera;
     //
     private SpriteBatch batch;
     // world's class stores box2D bodies
     private World world;
-    private Box2DDebugRenderer box2DDebugRenderer;
 
     private OrthogonalTiledMapRenderer orthogonalTiledMapRenderer;
     private TileMapHelper tileMapHelper;
@@ -33,11 +32,11 @@ public class GameScreen extends ScreenAdapter {
     /**
      * GameScreen constructor.
      * */
-    public GameScreen(OrthographicCamera camera) {
+    public GameScreen(OrthographicCamera camera, final PigeonGame game) {
+        this.game = game;
         this.camera = camera;
         this.batch = new SpriteBatch();
         this.world = new World(new Vector2(0, -25f), false);
-        this.box2DDebugRenderer = new Box2DDebugRenderer();
 
         this.tileMapHelper = new TileMapHelper(this);
         this.orthogonalTiledMapRenderer = tileMapHelper.setUpMap();
