@@ -21,12 +21,12 @@ public class PigeonGame extends Game {
 
     @Override
     public void create() {
-        batch = new SpriteBatch();
+//        batch = new SpriteBatch();
         this.widthScreen = Gdx.graphics.getWidth();
         this.heightScreen = Gdx.graphics.getHeight();
         this.orthographicCamera = new OrthographicCamera();
         this.orthographicCamera.setToOrtho(false, widthScreen, heightScreen);
-        setScreen(new GameScreen(orthographicCamera));
+        setScreen(new GameScreen(orthographicCamera, INSTANCE));
     }
 
     public void render() {

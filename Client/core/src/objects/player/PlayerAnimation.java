@@ -24,7 +24,7 @@ public class PlayerAnimation implements ApplicationListener {
     public void create() {
 
         // Load the sprite sheet as a Texture
-        flapSheet = new Texture(Gdx.files.internal("C:\\Users\\lnooj\\IdeaProjects\\piGeon\\Client\\assets\\maps\\pigeonsTiles.png"));
+        flapSheet = new Texture(Gdx.files.internal("C:\\Users\\ander\\IdeaProjects\\piGeon\\Client\\assets\\characters\\pigeon_flap_1.png"));
 
         // Use the split utility method to create a 2D array of TextureRegions. This is
         // possible because this sprite sheet contains frames of equal size and they are
