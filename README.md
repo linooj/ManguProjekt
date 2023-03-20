@@ -17,6 +17,9 @@ Kuidas mäng töötab
 - ESC nupp on ka päris bänger
 
 
+____________________________________________________________________________________
+
+
 **IDEE**- flappy bird type mäng tuviga. 
 
 - Space bar on liikumiseks ehk õhus püsimiseks, 
