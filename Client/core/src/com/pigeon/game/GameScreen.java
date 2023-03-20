@@ -67,7 +67,7 @@ public class GameScreen extends ScreenAdapter {
 
     public OrthogonalTiledMapRenderer setUpMap() {
 //        tiledMap = new TmxMapLoader().load("./Client/assets/maps/map1.tmx");
-        tiledMap = new TmxMapLoader().load("C:\\Users\\ander\\IdeaProjects\\piGeon\\Client\\assets\\maps\\map1.tmx");
+        tiledMap = new TmxMapLoader().load("maps/map1.tmx");
         MapLayers layers = tiledMap.getLayers();
         MapLayer objects = layers.get("objects");
         parseMapObjects(objects.getObjects());
@@ -89,7 +89,7 @@ public class GameScreen extends ScreenAdapter {
             if (mapObject instanceof TiledMapTileMapObject) {
 //                TiledMapTile player = ((TiledMapTileMapObject) mapObject).getTile();
 //                System.out.println(player.getObjects().getCount());
-                pigeonAtlas = new TextureAtlas("C:\\Users\\ander\\IdeaProjects\\piGeon\\Client\\assets\\maps\\pigeonTiles3birds.txt");
+                pigeonAtlas = new TextureAtlas("maps/pigeonTiles3birds.txt");
                 sprite = pigeonAtlas.createSprite("pigeonsTiles-10");
 //              Kuubiku algus koht - timmitav
                 sprite.setPosition(Gdx.graphics.getWidth() / 2 - sprite.getWidth() / 2, Gdx.graphics.getHeight() / 2);
