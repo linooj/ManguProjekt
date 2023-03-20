@@ -1,3 +1,22 @@
+**Dokumentatsioon**
+
+Vajalikud asjad
+- Java versioon
+- IntelliJ
+- Liisi Nõojärve kontakti kui midagi ei tööta
+
+Kuidas jooksutada
+
+1. Projekti avades vajuta paremal ääres Gradle nuppu
+2. (Tee järgmine samm nii ***Server*** kui ***Client*** ) Vajuta Tasks -> build -> (topelt klikk) build
+3. Projekti vaates vajuta Server -> src -> main -> java -> server -> ning jooksuta Main faili
+4. Projekti vaates vajuta Client -> desktop -> src -> com.pigeon.game -> ning jooksuta DesktopLauncher faili
+
+Kuidas mäng töötab
+- Vajutades nooli saad linnuga ringi liikuda
+- ESC nupp on ka päris bänger
+
+
 **IDEE**- flappy bird type mäng tuviga. 
 
 - Space bar on liikumiseks ehk õhus püsimiseks, 
