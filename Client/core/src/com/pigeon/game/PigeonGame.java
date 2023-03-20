@@ -1,41 +1,27 @@
 package com.pigeon.game;
 
-
 import com.badlogic.gdx.Game;
-import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.graphics.OrthographicCamera;
-import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-
+import com.pigeon.game.GameScreen;
 
 public class PigeonGame extends Game {
-
-    public static PigeonGame INSTANCE;
-    private int widthScreen, heightScreen;
-    private OrthographicCamera orthographicCamera;
-
+    // these are virtual width and height for our game
+    public static final int V_WIDTH = 400;
+    public static final int V_HEIGHT = 208;
+    public static final float PPM = 100;
+    // SpriteBatch is a container that holds all of our images, textures and stuff like that
     public SpriteBatch batch;
-    //for text on screen
-    public BitmapFont font;
-
 
     @Override
-    public void create() {
-//        batch = new SpriteBatch();
-        this.widthScreen = Gdx.graphics.getWidth();
-        this.heightScreen = Gdx.graphics.getHeight();
-        this.orthographicCamera = new OrthographicCamera();
-        this.orthographicCamera.setToOrtho(false, widthScreen, heightScreen);
-        setScreen(new GameScreen(orthographicCamera, INSTANCE));
+    public void create () {
+        batch = new SpriteBatch();
+        setScreen(new GameScreen(this));
     }
 
-    public void render() {
-        super.render(); // important!
-    }
-
-    public void dispose() {
-        batch.dispose();
-        font.dispose();
+    @Override
+    public void render () {
+        // delegate render method tot the PlayScreen or whatever screen that is active at that time
+        super.render();
     }
 
 }

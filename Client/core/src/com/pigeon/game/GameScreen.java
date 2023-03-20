@@ -2,261 +2,194 @@ package com.pigeon.game;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
-import com.badlogic.gdx.ScreenAdapter;
+import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
-import com.badlogic.gdx.maps.objects.RectangleMapObject;
-import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
-import com.badlogic.gdx.math.Rectangle;
-import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.maps.tiled.TiledMap;
-import com.badlogic.gdx.maps.tiled.TiledMapRenderer;
 import com.badlogic.gdx.maps.tiled.TmxMapLoader;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
-import com.badlogic.gdx.math.Vector3;
-import com.badlogic.gdx.utils.Array;
-import com.badlogic.gdx.utils.Pool;
-import objects.player.Player;
+import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
+import com.badlogic.gdx.physics.box2d.World;
+import com.badlogic.gdx.utils.viewport.FitViewport;
+import com.badlogic.gdx.utils.viewport.Viewport;
 
+import helper.B2WorldCreator;
+import objects.player.Tuvi;
+import scenes.Hud;
 
-import java.util.List;
+public class GameScreen implements Screen {
 
-import static helper.Constants.PPM;
+    // Reference to our Game, used to set Screens
+    private PigeonGame game;
+    private TextureAtlas atlas;
 
-public class GameScreen extends ScreenAdapter {
+    // basic playscreen variables
+    private OrthographicCamera gameCam;
+    private Viewport gamePort;
+    private Hud hud;
 
-//
-    static float JUMP_VELOCITY = 40f;
-    static float GRAVITY = -1f;
+    // Tiled map variables
+    private TmxMapLoader mapLoader;
+    private TiledMap map;
+    private OrthogonalTiledMapRenderer renderer;
 
-    final PigeonGame game;
-    private OrthographicCamera camera;
+    // Box2D variables
+    private World world;
+    private Box2DDebugRenderer b2dr; //gives a graphical representation of our fixtures & bodies inside our Box2D world
 
-    private SpriteBatch batch;
+    // proovida kasutada ShapeRendereri Box2DDebugRendereri asemel!
+//    private ShapeRenderer shapeRenderer;
 
-    private TiledMap tiledMap;
-    private TiledMapRenderer tiledMapRenderer;
-    //game objects
-    private Player player;
-
-//  Testing testing
-    private Array<Rectangle> tiles = new Array<Rectangle>();
-
-    private Pool<Rectangle> rectPool = new Pool<Rectangle>() {
-        @Override
-        protected Rectangle newObject () {
-            return new Rectangle();
-        }
-    };
+    // sprites
+    private Tuvi player;
 
     /**
-     * GameScreen constructor.
-     * */
-    public GameScreen(OrthographicCamera camera, final PigeonGame game) {
+     * PlayScreen constructor.
+     *
+     * @param game - Tuvi game.
+     */
+
+    public GameScreen(PigeonGame game) {
+        atlas = new TextureAtlas("maps/new_stuff/tuvi.txt");
+
         this.game = game;
-        this.camera = camera;
+        // create cam used to follow pigeon through cam world
+        gameCam = new OrthographicCamera();
 
-        tiledMap = new TmxMapLoader().load("./Client/assets/maps/map1.tmx");
-        tiledMapRenderer = new OrthogonalTiledMapRenderer(tiledMap);
+        // create FitViewport to maintain virtual aspect ratio despite screen size
+        gamePort = new FitViewport(
+                PigeonGame.V_WIDTH / PigeonGame.PPM,
+                PigeonGame.V_HEIGHT / PigeonGame.PPM,
+                gameCam
+        );
+        // StretchVP allow to change size of screen, but graphic will be distorted
+        // ScreenVP gives advantages to the players with bigger screen - bigger screen -> seeing more of map
+        // FitVP will add bars depending on how big screen player has, always maintains aspect ratio
 
-//      Algsesse kohta joonistamine
-        Rectangle gameEntityBorder = new Rectangle();
-        this.player = new Player(4f, 4f, gameEntityBorder);
+        // create our game HUD for scores/timers info
+        hud = new Hud(game.batch);
 
-        this.batch = new SpriteBatch();
-//        batch.setProjectionMatrix(camera.combined);
+        mapLoader = new TmxMapLoader();
+        map = mapLoader.load("maps/new_stuff/map1.tmx");
+        renderer = new OrthogonalTiledMapRenderer(map, 1 / PigeonGame.PPM);
 
+        // initially set our gamecam to be centered correctly at the start of the map
+        gameCam.position.set(gamePort.getWorldWidth() / 2, gamePort.getWorldHeight() / 2, 0);
+
+        // Vector() takes in gravity parameters
+        world = new World(new Vector2(0, -6), true);
+        b2dr = new Box2DDebugRenderer();
+
+        new B2WorldCreator(world, map);
+
+        // create Tuvi in our game world
+        player = new Tuvi (world, this);
+
+    }
+
+    public TextureAtlas getAtlas() {
+        return atlas;
+    }
+
+    @Override
+    public void show() {
+
+    }
+
+    // klahvide vajutused
+    public void handleInput(float dt) {
+        // check if up arrow button is pressed
+        if (Gdx.input.isKeyJustPressed(Input.Keys.UP)) {
+            player.b2body.applyLinearImpulse(new Vector2(0, 2f), player.b2body.getWorldCenter(), true);
+        }
+        // check if right arrow button is pressed (is it held down)
+        // and check if tuvi is not moving faster than specific speed (second check parameter in .isKeyPressed aster &&)
+        if (Gdx.input.isKeyPressed(Input.Keys.RIGHT) && player.b2body.getLinearVelocity().x <= 2) {
+            player.b2body.applyLinearImpulse(new Vector2(0.05f, 0), player.b2body.getWorldCenter(), true);
+        }
+        // check if left arrow button is pressed (held down)
+        if (Gdx.input.isKeyPressed(Input.Keys.LEFT) && player.b2body.getLinearVelocity().x >= -2) {
+            player.b2body.applyLinearImpulse(new Vector2(-0.05f, 0), player.b2body.getWorldCenter(), true);
+        }
+        // check if down arrow button is pressed (???) - vaata hiljem, kas on vaja teha seda
+    }
+
+    // dt - delta time
+    // all updating in the game world
+    public void update(float dt) {
+        // handle user's input first
+        handleInput(dt);
+
+        // in order for Box2D to execute our physics simulation we need to tell how many times to calculate per second:
+        world.step(1 / 60f, 6, 2);
+
+        player.update(dt);
+
+        // everytime the Tuvi moves we want to track it with our gamecam
+        gameCam.position.x = player.b2body.getPosition().x;
+
+        // update our gamecam with correct coordinates after changes
+        gameCam.update();
+        // tell our renderer to draw only what our camera can see in our game world
+        renderer.setView(gameCam);
+
+        if (Gdx.input.isKeyPressed(Input.Keys.ESCAPE)) Gdx.app.exit();
     }
 
     @Override
     public void render(float delta) {
+        // separate our update logic from render
+        update(delta);
 
-//        camera.update();
-//      See peab jääma muidu framed kirjutavad üle üksteist
-        Gdx.gl.glClearColor(0, 0, 0, 1); //black
+        // clear the game screen with black
+        Gdx.gl.glClearColor(0, 0, 0, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
+        // render our game map
+        renderer.render();
 
-        tiledMapRenderer.setView(camera);
-        tiledMapRenderer.render();
-        batch.setProjectionMatrix(camera.combined);
+        // render our Box2DDebugLines
+        b2dr.render(world, gameCam.combined);
 
+        game.batch.setProjectionMatrix(gameCam.combined);
+        game.batch.begin();
+        player.draw(game.batch);
+        game.batch.end();
 
-        batch.begin();
+        // set our batch to now draw what hud camera sees
+        game.batch.setProjectionMatrix(hud.stage.getCamera().combined);
+        hud.stage.draw();
+    }
 
-        checkUserInput();
-        //render objects
-        Texture pigeonTexture = new Texture(Gdx.files.internal("C:\\Users\\ander\\IdeaProjects\\piGeon\\Client\\assets\\characters\\pigeon_flap_1.png"));
-        batch.draw(pigeonTexture, player.getPosition().x, player.getPosition().y, 40, 40);
-        player.getPosition().add(0, GRAVITY);
+    @Override
+    public void resize(int width, int height) {
+        // update our game viewport
+        gamePort.update(width, height);
+    }
 
-        batch.end();
-
-
-//        update();
+    @Override
+    public void pause() {
 
     }
 
-    private void collisionDetection() {
-
-
-
-    }
-
-
-    private void update() {
-
-        cameraUpdate();
-        checkUserInput();
-        tiledMapRenderer.setView(camera);
-        player.update();
-
-        System.out.println("update on kasutuses");
-
-        if (Gdx.input.isKeyPressed(Input.Keys.ESCAPE)) Gdx.app.exit();
+    @Override
+    public void resume() {
 
     }
 
-    private void cameraUpdate() {
-        Vector3 position = camera.position;
-        //get player positions x and y value, bring it to real world position and round it for smoother camera movement
-        position.x = Math.round(player.getPosition().x * PPM * 10) / 10f;
-        position.y = Math.round(player.getPosition().x * PPM * 10) / 10f;
-
-        camera.position.set(position);
-        camera.update();
-    }
-
-
-
-    private void checkUserInput() {
-
-        if (Gdx.input.isKeyPressed(Input.Keys.RIGHT)) player.getPosition().add(1, 0);
-        if (Gdx.input.isKeyPressed(Input.Keys.LEFT)) player.getPosition().add(-1, 0);
-
-        //peab korduvalt vajutama,et õhus püsida
-        if (Gdx.input.isKeyJustPressed(Input.Keys.UP)) {
-//            player.setVelocity(0, player.getVelY() + JUMP_VELOCITY);
-            player.getPosition().add(0, JUMP_VELOCITY);
-//            player.getVelocity().add(0, GRAVITY);
-//            player.getPosition().add(0, player.getVelocity().y);
-        }
-//        if (Gdx.input.isKeyPressed(Input.Keys.DOWN)) {
-//            float force = body.getMass();
-//            //body.setLinearVelocity(0, body.getLinearVelocity().y);
-//            player.setVelocity(0, player.getVelY() + JUMP_VELOCITY);
-//            body.applyLinearImpulse(new Vector2(0, -force), body.getPosition(),true);
-//        }
-//
-//        body.setLinearVelocity(velX*speed, body.getLinearVelocity().y);
-
-
-        TiledMapTileLayer layer = (TiledMapTileLayer) tiledMap.getLayers().get("objects");
-        System.out.println(layer.getTileHeight());
-        Array<RectangleMapObject> objects = layer.getObjects().getByType(RectangleMapObject.class);
-
-        System.out.println(objects.size);
-        for (int i = 0; i < objects.size; i++) {
-            if (player.getGameEntityBorder().overlaps(objects.get(i).getRectangle())) {
-                System.out.println("hallloooooooooooo");
-                player.getPosition().set(player.getPosition().x, 16);
-            }
-        }
-
-
-//        Rectangle pigeonRectangle = rectPool.obtain();
-//        pigeonRectangle.set(player.getPosition().x, player.getPosition().y, player.getWidth(), player.getHeight());
-//        int startX, startY, endX, endY;
-//        if (player.getVelocity().x > 0) {
-//            startX = endX = (int)(player.getPosition().x + player.getWidth() + player.getVelocity().x);
-//        } else {
-//            startX = endX = (int)(player.getPosition().x + player.getVelocity().x);
-//        }
-//
-//
-//        startY = (int)(player.getPosition().y);
-//        endY = (int)(player.getPosition().y + player.getHeight());
-//        getTiles(startX, startY, endX, endY, tiles);
-//        pigeonRectangle.x += player.getVelocity().x;
-//        for (Rectangle tile : tiles) {
-//            if (pigeonRectangle.overlaps(tile)) {
-//                player.getVelocity().x = 0;
-//                break;
-//            }
-//        }
-//        pigeonRectangle.x = player.getPosition().x;
-//
-//        // if the koala is moving upwards, check the tiles to the top of its
-//        // top bounding box edge, otherwise check the ones to the bottom
-//        if (player.getVelocity().y > 0) {
-//            startY = endY = (int)(player.getPosition().y + player.getHeight() + player.getVelocity().y);
-//        } else {
-//            startY = endY = (int)(player.getPosition().y + player.getVelocity().y);
-//        }
-//        startX = (int)(player.getPosition().x);
-//        endX = (int)(player.getPosition().x + player.getWidth());
-//        getTiles(startX, startY, endX, endY, tiles);
-//        pigeonRectangle.y += player.getVelocity().y;
-//
-//        for (Rectangle tile : tiles) {
-//            System.out.println(pigeonRectangle.overlaps(tile));
-//            if (pigeonRectangle.overlaps(tile)) {
-//                // we actually reset the koala y-position here
-//                // so it is just below/above the tile we collided with
-//                // this removes bouncing :)
-//                if (player.getVelocity().y > 0) {
-//                    player.getPosition().y = tile.y - player.getHeight();
-//                    // we hit a block jumping upwards, let's destroy it!
-//                    TiledMapTileLayer layer = (TiledMapTileLayer)tiledMap.getLayers().get("Tile Layer");
-//                    layer.setCell((int)tile.x, (int)tile.y, null);
-//                } else {
-//                    player.getPosition().y = tile.y + tile.height;
-//                    // if we hit the ground, mark us as grounded so we can jump
-////                    player.grounded = true;
-//                }
-//                player.getVelocity().y = 0;
-//                break;
-//            }
-//        }
-//        rectPool.free(pigeonRectangle);
-//
-//        // unscale the velocity by the inverse delta time and set
-//        // the latest position
-//        player.getPosition().add(player.getVelocity());
-//
-////        player.getVelocity().scl(1 / deltaTime);
-//
-//        // Apply damping to the velocity on the x-axis so we don't
-//        // walk infinitely once a key was pressed
-//
-////        player.getVelocity().x *= Koala.DAMPING;
-        
-        player.getGameEntityBorder().set(player.getPosition().x, player.getPosition().y, player.getWidth(), player.getHeight());
+    @Override
+    public void hide() {
 
     }
 
-    private void getTiles (int startX, int startY, int endX, int endY, Array<Rectangle> tiles) {
-        TiledMapTileLayer layer = (TiledMapTileLayer) tiledMap.getLayers().get("Tile Layer");
-        rectPool.freeAll(tiles);
-        tiles.clear();
-        for (int y = startY; y <= endY; y++) {
-//            System.out.println("loopidi loop");
-            for (int x = startX; x <= endX; x++) {
-//                System.out.println("skoobidi skoop");
-                TiledMapTileLayer.Cell cell = layer.getCell(x, y);
-                if (cell != null) {
-                    Rectangle rect = rectPool.obtain();
-                    rect.set(x, y, 1, 1);
-                    tiles.add(rect);
-                } else {
-                    System.out.println(x + " " + y);
-                }
-            }
-        }
+    @Override
+    public void dispose() {
+        map.dispose();
+        renderer.dispose();
+        world.dispose();
+        b2dr.dispose();
+        hud.dispose();
     }
-
-//    public void setPlayer(Player player) {
-//        this.player = player;
-//    }
 }

@@ -1,0 +1,12 @@
+tuvi.png
+size: 47, 13
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+tuvi
+  rotate: false
+  xy: 1, 1
+  size: 45, 11
+  orig: 47, 13
+  offset: 1, 1
+  index: -1
