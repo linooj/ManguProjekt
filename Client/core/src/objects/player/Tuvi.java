@@ -54,6 +54,35 @@ public class Tuvi extends Sprite {
 
     public void update(float dt) {
         setPosition(b2body.getPosition().x - getWidth() / 2, b2body.getPosition().y - getHeight() / 2);
+        setRegion(getFrame(dt));
+    }
+
+    public TextureRegion getFrame(float dt) {
+        currentState = getState();
+
+        TextureRegion region;
+        switch (currentState) {
+            case FLYING:
+                region = (TextureRegion) tuviFLy.getKeyFrame(stateTimer, true);
+                break;
+            case STANDING:
+            default:
+                region = tuviStand;
+                break;
+        }
+
+        stateTimer = currentState == previousState ? stateTimer + dt : 0;
+        previousState = currentState;
+        return region;
+
+    }
+
+    public State getState() {
+        if (b2body.getLinearVelocity().y > 0) {
+            return State.FLYING;
+        } else {
+            return State.STANDING;
+        }
     }
 
     public void defineTuvi() {
