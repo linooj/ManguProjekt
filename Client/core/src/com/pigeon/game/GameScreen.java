@@ -16,8 +16,11 @@ import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 
 import helper.B2WorldCreator;
+import network.ClientConnection;
 import objects.player.Tuvi;
 import scenes.Hud;
+
+import java.io.IOException;
 
 public class GameScreen implements Screen {
 
@@ -39,6 +42,9 @@ public class GameScreen implements Screen {
     private World world;
     private Box2DDebugRenderer b2dr; //gives a graphical representation of our fixtures & bodies inside our Box2D world
 
+    // Network related variables
+    private ClientConnection clientConnection;
+
     // proovida kasutada ShapeRendereri Box2DDebugRendereri asemel!
 //    private ShapeRenderer shapeRenderer;
 
@@ -51,8 +57,11 @@ public class GameScreen implements Screen {
      * @param game - Tuvi game.
      */
 
-    public GameScreen(PigeonGame game) {
+    public GameScreen(PigeonGame game) throws IOException {
         atlas = new TextureAtlas("maps/new_stuff/tuvi.txt");
+
+//      Starting client connection
+        this.clientConnection = new ClientConnection();
 
         this.game = game;
         // create cam used to follow pigeon through cam world
@@ -134,6 +143,9 @@ public class GameScreen implements Screen {
         gameCam.update();
         // tell our renderer to draw only what our camera can see in our game world
         renderer.setView(gameCam);
+
+        // send UDP packets
+        clientConnection.client.sendUDP(player.getLocation());
 
         if (Gdx.input.isKeyPressed(Input.Keys.ESCAPE)) Gdx.app.exit();
     }
