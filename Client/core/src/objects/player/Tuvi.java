@@ -11,6 +11,7 @@ import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.utils.Array;
 import com.pigeon.game.GameScreen;
 import com.pigeon.game.PigeonGame;
+import network.Location;
 
 public class Tuvi extends Sprite {
 
@@ -105,4 +106,7 @@ public class Tuvi extends Sprite {
 
     }
 
+    public Location getLocation() {
+        return new Location(this.b2body.getPosition().x, this.b2body.getPosition().y);
+    }
 }
