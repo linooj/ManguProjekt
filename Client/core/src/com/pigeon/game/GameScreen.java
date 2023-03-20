@@ -16,8 +16,11 @@ import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 
 import helper.B2WorldCreator;
+import network.ClientConnection;
 import objects.player.Tuvi;
 import scenes.Hud;
+
+import java.io.IOException;
 
 public class GameScreen implements Screen {
 
@@ -37,7 +40,6 @@ public class GameScreen implements Screen {
 
     // Box2D variables
     private World world;
-    private Box2DDebugRenderer b2dr; //gives a graphical representation of our fixtures & bodies inside our Box2D world
 
     // sprites
     private Tuvi player;
@@ -52,56 +54,10 @@ public class GameScreen implements Screen {
      *
      * @param game - Tuvi game.
      */
-    public GameScreen(PigeonGame game) {
-        atlas = new TextureAtlas("maps/new_stuff/tuvi.txt");
-
-        // Starting client connection
-        this.clientConnection = new ClientConnection();
-
-        this.game = game;
-        // create cam used to follow pigeon through cam world
-        gameCam = new OrthographicCamera();
-
-        // create FitViewport to maintain virtual aspect ratio despite screen size
-        gamePort = new FitViewport(
-                PigeonGame.V_WIDTH / PigeonGame.PPM,
-                PigeonGame.V_HEIGHT / PigeonGame.PPM,
-                gameCam
-        );
-        // StretchVP allow to change size of screen, but graphic will be distorted
-        // ScreenVP gives advantages to the players with bigger screen - bigger screen -> seeing more of map
-        // FitVP will add bars depending on how big screen player has, always maintains aspect ratio
-
-        // create our game HUD for scores/timers info
-        hud = new Hud(game.batch);
-
-        mapLoader = new TmxMapLoader();
-        map = mapLoader.load("maps/new_stuff/map1.tmx");
-        renderer = new OrthogonalTiledMapRenderer(map, 1 / PigeonGame.PPM);
-
-        // initially set our gamecam to be centered correctly at the start of the map
-        gameCam.position.set(gamePort.getWorldWidth() / 2, gamePort.getWorldHeight() / 2, 0);
-
-        // Vector() takes in gravity parameters
-        world = new World(new Vector2(0, -6), true);
-        b2dr = new Box2DDebugRenderer();
-
-        new B2WorldCreator(world, map);
-
-        // create Tuvi in our game world
-        player = new Tuvi (world, this);
-
-    }
-     /**
-     * GameScreen constructor.
-     *
-     * @param game - Tuvi game.
-     */
-
     public GameScreen(PigeonGame game) throws IOException {
         atlas = new TextureAtlas("maps/new_stuff/tuvi.txt");
 
-//      Starting client connection
+        // Starting client connection
         this.clientConnection = new ClientConnection();
 
         this.game = game;
