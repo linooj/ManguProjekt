@@ -29,7 +29,11 @@ public class Tuvi extends Sprite {
     private Animation tuviFLy;
     private float stateTimer;
 
-    // Constructor
+    /**
+     * Constructor
+     * @param world World.
+     * @param screen GameScreen.
+     */
     public Tuvi(World world, GameScreen screen) {
         super(screen.getAtlas().findRegion("tuvi"));
         this.world = world;

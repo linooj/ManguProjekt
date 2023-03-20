@@ -39,18 +39,15 @@ public class GameScreen implements Screen {
     private World world;
     private Box2DDebugRenderer b2dr; //gives a graphical representation of our fixtures & bodies inside our Box2D world
 
-    // proovida kasutada ShapeRendereri Box2DDebugRendereri asemel!
-//    private ShapeRenderer shapeRenderer;
-
     // sprites
     private Tuvi player;
+
 
     /**
      * PlayScreen constructor.
      *
      * @param game - Tuvi game.
      */
-
     public GameScreen(PigeonGame game) {
         atlas = new TextureAtlas("maps/new_stuff/tuvi.txt");
 
@@ -98,7 +95,10 @@ public class GameScreen implements Screen {
 
     }
 
-    // klahvide vajutused
+    /**
+     * Handles the key pressing logic
+     * @param dt- delta time.
+     */
     public void handleInput(float dt) {
         // check if up arrow button is pressed
         if (Gdx.input.isKeyJustPressed(Input.Keys.UP)) {
@@ -116,8 +116,11 @@ public class GameScreen implements Screen {
         // check if down arrow button is pressed (???) - vaata hiljem, kas on vaja teha seda
     }
 
-    // dt - delta time
-    // all updating in the game world
+
+    /**
+     * all updating in the game world
+     * @param dt- delta time.
+     */
     public void update(float dt) {
         // handle user's input first
         handleInput(dt);

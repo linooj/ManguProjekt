@@ -2,7 +2,6 @@ package com.pigeon.game;
 
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.pigeon.game.GameScreen;
 
 public class PigeonGame extends Game {
     // these are virtual width and height for our game
@@ -20,7 +19,7 @@ public class PigeonGame extends Game {
 
     @Override
     public void render () {
-        // delegate render method tot the PlayScreen or whatever screen that is active at that time
+        // delegate render method to the PlayScreen or whatever screen that is active at that time
         super.render();
     }
 

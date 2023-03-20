@@ -28,8 +28,6 @@ public class Hud implements Disposable {
     Label countdownLabel;
     Label scoreLabel;
     Label timeLabel;
-//    Label levelLabel;
-//    Label worldLabel;
     Label tuviLabel;
 
     /**
@@ -66,19 +64,15 @@ public class Hud implements Disposable {
                 new Label.LabelStyle(new BitmapFont(), Color.WHITE)
         );
         timeLabel = new Label("TIME", new Label.LabelStyle(new BitmapFont(), Color.WHITE));
-//        levelLabel = new Label("1-1", new Label.LabelStyle(new BitmapFont(), Color.WHITE));
-//        worldLabel = new Label("WORLD", new Label.LabelStyle(new BitmapFont(), Color.WHITE));
         tuviLabel = new Label("TUVI", new Label.LabelStyle(new BitmapFont(), Color.WHITE));
 
         // to add our labels to the table, we are going to use .add method.
         // we are going to expand Tuvi label to length of our screen
         // when we are using .exapandX method with multiple labels, it will share equal space for every of them
         table.add(tuviLabel).expandX().padTop(10);
-//        table.add(worldLabel).expandX().padTop(10);
         table.add(timeLabel).expandX().padTop(10);
         table.row(); // everything below this, will be on a new row
         table.add(scoreLabel).expandX();
-//        table.add(levelLabel).expandX();
         table.add(countdownLabel).expandX();
 
         // adding table to our stage:
