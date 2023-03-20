@@ -1,0 +1,26 @@
+pigeonTiles3birds.png
+size: 15, 37
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+pigeonsTiles-10
+  rotate: false
+  xy: 1, 14
+  size: 13, 10
+  orig: 16, 16
+  offset: 2, 2
+  index: -1
+pigeonsTiles-11
+  rotate: false
+  xy: 1, 26
+  size: 13, 10
+  orig: 16, 16
+  offset: 2, 2
+  index: -1
+pigeonsTiles-12
+  rotate: false
+  xy: 1, 1
+  size: 13, 11
+  orig: 16, 16
+  offset: 2, 1
+  index: -1
