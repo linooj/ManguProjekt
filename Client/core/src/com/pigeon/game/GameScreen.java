@@ -17,6 +17,8 @@ import com.badlogic.gdx.utils.viewport.Viewport;
 
 import helper.B2WorldCreator;
 import network.ClientConnection;
+import network.Location;
+import objects.player.SecondTuvi;
 import objects.player.Tuvi;
 import scenes.Hud;
 
@@ -47,6 +49,7 @@ public class GameScreen implements Screen {
 
     // Network related variables
     private ClientConnection clientConnection;
+
 
 
     /**
@@ -171,11 +174,24 @@ public class GameScreen implements Screen {
         game.batch.setProjectionMatrix(gameCam.combined);
         game.batch.begin();
         player.draw(game.batch);
+        getOtherPigeons(delta);
+
         game.batch.end();
 
         // set our batch to now draw what hud camera sees
         game.batch.setProjectionMatrix(hud.stage.getCamera().combined);
         hud.stage.draw();
+    }
+
+    //ToDo pigeone peaks renderdama ainult korra
+    //ToDo - vb server filterdaks välja saatja tuvi-seda infot pole vaja. Mdu on topelt
+    public void getOtherPigeons(float delta) {
+        Location[] pigeonLocations = clientConnection.locations;
+        for (Location l :pigeonLocations) {
+            SecondTuvi tuvi = new SecondTuvi(this);
+            tuvi.update(delta, l.x, l.y);
+            tuvi.draw(game.batch);
+        }
     }
 
     @Override

@@ -50,6 +50,7 @@ public class MyServer {
                     System.out.println(((Location) object).x + " " + ((Location) object).y);
 
                     players.put(c.getRemoteAddressUDP(), (Location) object);
+                    sendState();
                 }
             }
 

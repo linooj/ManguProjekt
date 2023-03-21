@@ -1,7 +1,7 @@
 package network;
 
 public class Location {
-    float x, y;
+    public float x, y;
 
     /**
      * Empty constructor is needed here to receive Player objects over the network.

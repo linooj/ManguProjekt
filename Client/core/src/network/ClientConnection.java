@@ -9,6 +9,7 @@ import java.io.IOException;
 public class ClientConnection {
     //    Siin toimub kliendi registreerimine ja sisendiga tegelemine
     public Client client;
+    public Location[] locations;
 
     public ClientConnection() throws IOException {
         client = new Client();
@@ -23,8 +24,7 @@ public class ClientConnection {
                                    if (object instanceof Location[]) {
 
                                        // get the list of locations
-                                       Location[] locationsList = (Location[]) object;
-
+                                       locations = (Location[]) object;
                                    }
                                }
                            }
